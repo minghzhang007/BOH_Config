@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="monitor" class="com.tuniu.operation.platform.tsg.monitor.Monitor">
+        <property name="brokerURL"
+                  value="failover://@{broker.address}?randomize=false&amp;jms.useAsyncSend=true"></property>
+        <property name="queueName" value="@{queue.name}"></property>
+    </bean>
+
+    <!-- 服务调用方 -->
+    <bean id="TSPCommonClient"
+          class="com.tuniu.operation.platform.tsg.client.proxy.tsg.TSPCommonClient">
+        <property name="consumerConfig" ref="consumerConfig" />
+        <property name="providerConfig" ref="providerConfig" />
+        <property name="registerConfig" ref="registerConfig" />
+        <property name="connectTimeout" value="10"></property>
+        <property name="socketTimeout" value="10"></property>
+    </bean>
+    <bean id="consumerConfig"
+          class="com.tuniu.operation.platform.tsg.client.config.ConsumerConfig"
+          lazy-init="false">
+        <property name="refferenceService">
+            <list>
+               <!-- <value>PLA.SMS.SmsController.sendSms</value>-->
+            </list>
+        </property>
+    </bean>
+
+
+    <!-- 服务发布方 -->
+    <bean id="providerConfig"
+          class="com.tuniu.operation.platform.tsg.client.config.ProviderConfig">
+        <property name="subSystem" value="@{project.subName}"></property>
+        <property name="packageName" value="@{project.contextPath}"></property>
+        <property name="maintainer" value="@{project.maintainer}"></property>
+        <property name="isScan">
+            <value>true</value>
+        </property>
+        <property name="provideService">
+            <list></list>
+        </property>
+    </bean>
+    <bean id="registerConfig"
+          class="com.tuniu.operation.platform.tsg.client.config.RegisterConfig">
+        <property name="registryAddress" value="@{registry.address}"></property>
+    </bean>
+</beans>

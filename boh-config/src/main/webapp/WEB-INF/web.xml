@@ -31,6 +31,19 @@
         <filter-name>CharacterEncodingFilter</filter-name>
         <servlet-name>boh-config-servlet</servlet-name>
     </filter-mapping>
+
+    <filter>
+        <filter-name>base64DecodingFilter</filter-name>
+        <filter-class>com.lewis.bohconfig.common.core.Base64DecodingFilter</filter-class>
+        <init-param>
+            <param-name>noDecode</param-name>
+            <param-value>/test/Decode,/test/Decode2</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>base64DecodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     
     <servlet>
         <servlet-name>boh-config-servlet</servlet-name>
