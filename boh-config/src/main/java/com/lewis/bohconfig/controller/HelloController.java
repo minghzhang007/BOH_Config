@@ -9,9 +9,11 @@ import com.lewis.bohconfig.domain.SwitchRequestParam;
 import com.lewis.bohconfig.domain.VarParamSwitch;
 import com.lewis.bohconfig.service.ITestService;
 import com.lewis.bohconfig.zk.ZKManager;
+import com.tuniu.operation.platform.tsg.client.annotation.TSPServiceInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -52,6 +54,7 @@ public class HelloController {
 
     @RequestMapping("/zk/create")
     @ResponseJson
+    @TSPServiceInfo(name="BOH.CNF.HelloController.create",description = "BOH.CNF测试")
     public SwitchRequestParam create(@Json SwitchRequestParam param){
        /* SwitchRequestParam param = new SwitchRequestParam();
         param.setContext("hehe");*/
@@ -72,13 +75,28 @@ public class HelloController {
         return param;
     }
 
-    @RequestMapping("/zk/test")
+    @RequestMapping(value = "/zk/test",method = RequestMethod.POST)
     @ResponseJson
-    public SwitchRequestParam test(){
-        SwitchRequestParam param = new SwitchRequestParam();
+    public SwitchRequestParam test(@Json SwitchRequestParam param){
         param.setContext("hehe");
         param.setOnOff(false);
         return param;
+    }
+
+    @RequestMapping("/zk/toAddFunctionSwitch")
+    public String toAdd(){
+        return "addFunctionSwitch";
+    }
+
+    @RequestMapping("/zk/toAddVarParam")
+    public String toAddVarParam(){
+        return "addVarParam";
+    }
+
+    @RequestMapping("/zk/addVarParam")
+    public String addVarParam(@Json VarParamSwitch varParamSwitch){
+        System.out.println(varParamSwitch);
+        return "list";
     }
 
 }

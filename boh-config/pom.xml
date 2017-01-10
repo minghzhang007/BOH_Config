@@ -207,6 +207,16 @@
             <artifactId>tsp-client</artifactId>
             <version>1.2.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.tuniu.operation.platform</groupId>
+            <artifactId>base-common</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>boh-config</finalName>

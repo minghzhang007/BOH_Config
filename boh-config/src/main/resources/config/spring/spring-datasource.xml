@@ -3,15 +3,26 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-<!--
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <bean
+            class="com.tuniu.operation.platform.base.environment.PropertyPlaceholderConfigurerSupportMultiEnvironment">
+        <property name="order" value="2" />
         <property name="locations">
             <list>
-                <value>classpath:config/jdbc.properties</value>
+                <value>classpath:config/resource/config.properties</value>
+                <value>classpath:config/resource/jdbc.properties</value>
             </list>
         </property>
+
+        <property name="placeholderConfigLocations">
+            <list>
+                <value>classpath:config/resource/tsp_@{envName}.properties</value>
+                <value>classpath:config/resource/system_param_init_@{envName}.properties</value>
+            </list>
+        </property>
+        <property name="placeholderPrefix" value="@{" />
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
     </bean>
--->
 
     <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
@@ -19,36 +30,34 @@
 
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
         <!-- 数据库基本信息配置 -->
-        <property name = "url" value = "jdbc:mysql://127.0.0.1:3306/boh" />
-        <property name = "username" value = "root" />
-        <property name = "password" value = "root" />
-        <property name = "driverClassName" value = "com.mysql.jdbc.Driver" />
-      <!--  <property name = "filters" value = "${filters}" />-->
+        <property name="url" value="@{url}"/>
+        <property name = "username" value = "@{user}" />
+        <property name = "password" value = "@{password}" />
+        <property name = "driverClassName" value ="@{driverClassName}" />
         <!-- 最大并发连接数 -->
-        <property name = "maxActive" value = "${maxActive}" />
+        <property name = "maxActive" value = "@{maxActive}" />
         <!-- 初始化连接数量 -->
-        <property name = "initialSize" value = "${initialSize}" />
+        <property name = "initialSize" value = "@{initialSize}" />
         <!-- 配置获取连接等待超时的时间 -->
-        <property name = "maxWait" value = "${maxWait}" />
+        <property name = "maxWait" value = "@{maxWait}" />
         <!-- 最小空闲连接数 -->
-        <property name = "minIdle" value = "${minIdle}" />
+        <property name = "minIdle" value = "@{minIdle}" />
         <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-        <property name = "timeBetweenEvictionRunsMillis" value ="${timeBetweenEvictionRunsMillis}" />
+        <property name = "timeBetweenEvictionRunsMillis" value ="@{timeBetweenEvictionRunsMillis}" />
         <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-        <property name = "minEvictableIdleTimeMillis" value ="${minEvictableIdleTimeMillis}" />
-        <property name = "validationQuery" value = "${validationQuery}" />
-        <property name = "testWhileIdle" value = "${testWhileIdle}" />
-        <property name = "testOnBorrow" value = "${testOnBorrow}" />
-        <property name = "testOnReturn" value = "${testOnReturn}" />
-        <property name = "maxOpenPreparedStatements" value ="${maxOpenPreparedStatements}" />
+        <property name = "minEvictableIdleTimeMillis" value ="@{minEvictableIdleTimeMillis}" />
+        <property name = "validationQuery" value = "@{validationQuery}" />
+        <property name = "testWhileIdle" value = "@{testWhileIdle}" />
+        <property name = "testOnBorrow" value = "@{testOnBorrow}" />
+        <property name = "testOnReturn" value = "@{testOnReturn}" />
+        <property name = "maxOpenPreparedStatements" value ="@{maxOpenPreparedStatements}" />
         <!-- 打开 removeAbandoned 功能 -->
-        <property name = "removeAbandoned" value = "${removeAbandoned}" />
+        <property name = "removeAbandoned" value = "@{removeAbandoned}" />
         <!-- 1800 秒，也就是 30 分钟 -->
-        <property name = "removeAbandonedTimeout" value ="${removeAbandonedTimeout}" />
+        <property name = "removeAbandonedTimeout" value ="@{removeAbandonedTimeout}" />
         <!-- 关闭 abanded 连接时输出错误日志 -->
-        <property name = "logAbandoned" value = "${logAbandoned}" />
+        <property name = "logAbandoned" value = "@{logAbandoned}" />
     </bean>
-
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.lewis.bohconfig.dao"/>
@@ -58,6 +67,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
         <property name="mapperLocations" value="classpath:config/mybatis/mapper/*.xml"/>
+      <!--  <property name="configLocation" value="classpath:config/spring/spring-datasource.xml"/>-->
     </bean>
 
 </beans>

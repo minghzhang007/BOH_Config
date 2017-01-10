@@ -1,13 +1,13 @@
-package com.lewis.bohconfig.dao;
+package com.lewis.bohconfig.service;
 
 import com.lewis.bohconfig.domain.VarParamSwitch;
 
 import java.util.List;
 
 /**
- * Created by zhangminghua on 2017/1/7.
+ * Created by zhangminghua on 2017/1/10.
  */
-public interface IVarParamSwitchDao {
+public interface IVarParamService {
 
     int addVarParamSwitch(VarParamSwitch varParam);
 
@@ -18,4 +18,5 @@ public interface IVarParamSwitchDao {
     List<VarParamSwitch> queryAllVarParamSwitchs();
 
     VarParamSwitch queryVarParamSwitchByIdentity(String identity);
+
 }

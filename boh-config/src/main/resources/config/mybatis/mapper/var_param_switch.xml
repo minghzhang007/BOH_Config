@@ -13,12 +13,51 @@
         id,identity,description,content,del_flag
     </sql>
 
-    <select id="getAllVarParamSwitch" resultMap="varParamSwitch">
+    <select id="queryAllVarParamSwitchs" resultMap="varParamSwitch">
         SELECT
         <include refid="varParamSwitchColumns"/>
         FROM var_param_switch
         WHERE del_flag = 0
     </select>
+    
+    <select id="queryVarParamSwitchByIdentity" resultMap="varParamSwitch">
+        SELECT
+        <include refid="varParamSwitchColumns"/>
+        FROM var_param_switch
+        WHERE identity = #{identity} AND del_flag = 0
+    </select>
+    
+    <insert id="addVarParamSwitch" >
+        INSERT INTO var_param_switch(
+        identity,content,del_flag
+        <if test="description != null">
+            ,description
+        </if>
+        ) VALUES (
+        #{identity},#{content},#{delFlag}
+        <if test="description != null">
+            ,#{description}
+        </if>
+        )
+    </insert>
+    
+    <update id="updateVarParamSwitch">
+        UPDATE var_param_switch SET
+        <if test="content != null">
+            content = #{content}
+        </if>
+        <if test="del_flag != null">
+            ,del_flag = #{delFlag}
+        </if>
+        <if test="description != null">
+            ,description = #{description}
+        </if>
+        WHERE identity = #{identity}
+    </update>
+    
+    <delete id="deleteVarParamSwitch">
+        UPDATE var_param_switch SET del_flag = 1 WHERE identity = #{identity}
+    </delete>
 
     
 </mapper>

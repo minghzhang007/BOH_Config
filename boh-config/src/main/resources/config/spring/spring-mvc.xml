@@ -8,7 +8,6 @@
     
     <context:component-scan base-package="com.lewis.bohconfig">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
     </context:component-scan>
     <mvc:resources mapping="/static/**" location="/static/"/>
     <mvc:annotation-driven >

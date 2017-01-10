@@ -103,6 +103,10 @@
     <orderEntry type="library" name="Maven: com.tuniu.operation.platform:base-json:0.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-jaxrs:1.9.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.activemq:activemq-all:5.4.3" level="project" />
+    <orderEntry type="library" name="Maven: com.tuniu.operation.platform:base-common:1.0.5" level="project" />
+    <orderEntry type="library" name="Maven: com.tuniu.operation.platform:base-io:0.5.0" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.servlet:jstl:1.2" level="project" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">

@@ -18,7 +18,7 @@ public class TestServiceImpl implements ITestService {
     private IVarParamSwitchDao varParamSwitchDao;
 
     public List<VarParamSwitch> queryAllVarParamSwitch() {
-        List<VarParamSwitch> allVarParamSwitch = varParamSwitchDao.getAllVarParamSwitch();
+        List<VarParamSwitch> allVarParamSwitch = varParamSwitchDao.queryAllVarParamSwitchs();
         return allVarParamSwitch;
     }
 }

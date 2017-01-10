@@ -3,9 +3,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean class="com.tuniu.operation.platform.tsg.client.common.AppContext"></bean>
     <bean id="monitor" class="com.tuniu.operation.platform.tsg.monitor.Monitor">
         <property name="brokerURL"
-                  value="failover://@{broker.address}?randomize=false&amp;jms.useAsyncSend=true"></property>
+                  value="failover://@{tsp.broker.address}?randomize=false&amp;jms.useAsyncSend=true"></property>
         <property name="queueName" value="@{queue.name}"></property>
     </bean>
 
@@ -32,9 +33,9 @@
     <!-- 服务发布方 -->
     <bean id="providerConfig"
           class="com.tuniu.operation.platform.tsg.client.config.ProviderConfig">
-        <property name="subSystem" value="@{project.subName}"></property>
-        <property name="packageName" value="@{project.contextPath}"></property>
-        <property name="maintainer" value="@{project.maintainer}"></property>
+        <property name="subSystem" value="@{tsp.project.subName}"></property>
+        <property name="packageName" value="@{tsp.project.contextPath}"></property>
+        <property name="maintainer" value="@{tsp.project.maintainer}"></property>
         <property name="isScan">
             <value>true</value>
         </property>
@@ -44,6 +45,6 @@
     </bean>
     <bean id="registerConfig"
           class="com.tuniu.operation.platform.tsg.client.config.RegisterConfig">
-        <property name="registryAddress" value="@{registry.address}"></property>
+        <property name="registryAddress" value="@{tsp.registry.address}"></property>
     </bean>
 </beans>
