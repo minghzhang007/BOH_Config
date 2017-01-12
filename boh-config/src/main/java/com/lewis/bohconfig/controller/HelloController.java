@@ -43,7 +43,7 @@ public class HelloController {
     @RequestMapping("/test/zk")
     @ResponseBody
     public String testZk(){
-        zkManager.createNode("/varParam/queryProductDatePriceResIdNumberPerThread","20");
+        zkManager.createPersistentNode("/varParam/queryProductDatePriceResIdNumberPerThread","20");
         String resp = zkManager.readNode("/varParam/queryProductDatePriceResIdNumberPerThread");
         String ip = IpUtil.getIp();
         int tomcatPort = PortUtil.getTomcatPort();
@@ -68,7 +68,7 @@ public class HelloController {
             data = param.getContext();
         }
         sb.append("/").append(param.getSwithType()).append("/").append(param.getIdentity());
-        zkManager.createNode(sb.toString(),data);
+        zkManager.createPersistentNode(sb.toString(),data);
         String resp = zkManager.readNode(sb.toString());
         param.setOnOff(false);
         param.setContext("hahah");

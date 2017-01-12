@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lewis.bohconfig.dao.BohSwitchDao">
+    <resultMap id="bohSwitchDO" type="com.lewis.bohconfig.domain.BohSwitchDO">
+        <result property="id" column="id"/>
+        <result property="identity" column="identity"/>
+        <result property="level" column="level"/>
+        <result property="content" column="content"/>
+        <result property="serviceName" column="service_name"/>
+        <result property="bussinessType" column="bussiness_type"/>
+        <result property="mark" column="mark"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+    
+    <sql id="bohSwitchColumns">
+        id,identity,level,content,service_name,bussiness_type,mark,del_flag
+    </sql>
+
+    <select id="getAllBohSwitch" resultMap="bohSwitchDO">
+        SELECT
+        <include refid="bohSwitchColumns"/>
+        FROM boh_switch
+        WHERE del_flag = 0
+    </select>
+    
+    <select id="getBohSwitchByIdentity" resultMap="bohSwitchDO">
+        SELECT
+        <include refid="bohSwitchColumns"/>
+        FROM boh_switch
+        WHERE identity = #{identity} AND del_flag = 0
+    </select>
+    
+    <insert id="insertBohSwitch" >
+        INSERT INTO boh_switch(
+        identity,level,content,del_flag
+        <if test="serviceName != null">
+            ,service_name
+        </if>
+        <if test="bussinessType != null">
+            ,bussiness_type
+        </if>
+        <if test="mark != null">
+            ,mark
+        </if>
+        ) VALUES (
+        #{identity},#{level},#{content},#{delFlag}
+        <if test="serviceName != null">
+            ,#{serviceName}
+        </if>
+        <if test="bussinessType != null">
+            ,#{bussinessType}
+        </if>
+        <if test="mark != null">
+            ,#{mark}
+        </if>
+        )
+    </insert>
+    
+    <update id="updateBohSwitch">
+        UPDATE boh_switch SET
+        <if test="content != null">
+            content = #{content}
+        </if>
+        <if test="del_flag != null">
+            ,del_flag = #{delFlag}
+        </if>
+        <if test="mark != null">
+            ,mark = #{mark}
+        </if>
+        WHERE identity = #{identity}
+    </update>
+    
+    <delete id="deleteBohSwitch">
+        UPDATE boh_switch SET del_flag = 1 WHERE identity = #{identity}
+    </delete>
+
+    
+</mapper>
