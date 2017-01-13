@@ -82,7 +82,8 @@ public class ZKManager {
         ZKManager zkManager = new ZKManager();
         String path = "/jiangsu/nanjing";
         //testGenOrderNo();
-        distributionLock(zkManager.client,path);
+        //distributionLock(zkManager.client,path);
+        testPathChildCache(zkManager,path);
     }
 
     private static void testGenOrderNo(){
@@ -132,7 +133,7 @@ public class ZKManager {
         latch.countDown();
     }
 
-    private static void testPathChildCache(ZKManager zkManager, String path) throws Exception {
+    private static void testPathChildCache(final ZKManager zkManager, final String path) throws Exception {
         PathChildrenCache cache = new PathChildrenCache(zkManager.client,path,true);
         cache.start(PathChildrenCache.StartMode.POST_INITIALIZED_EVENT);
         cache.getListenable().addListener(new PathChildrenCacheListener() {
@@ -145,16 +146,17 @@ public class ZKManager {
                         System.out.println("子节点移除 :"+event.getData().getPath());
                         break;
                     case CHILD_UPDATED:
-                        System.out.println("子节点更新 :"+event.getData().getPath());
+                        String s = zkManager.readNode(path + "/xuanwuqu");
+                        System.out.println("子节点更新 :"+event.getData().getPath() +" ,new Data:"+s);
                         break;
                     default:
                         break;
                 }
             }
         });
-        zkManager.createPersistentNode(path,"nanjing");
+        zkManager.createEphemeralNode(path,"nanjing");
         Thread.sleep(1000);
-        zkManager.createPersistentNode(path+"/xuanwuqu","xuanwuqu");
+        zkManager.createEphemeralNode(path+"/xuanwuqu","xuanwuqu");
         Thread.sleep(1000);
         zkManager.setData(path+"/xuanwuqu","xuanwuqubianle");
         zkManager.deleteNode(path+"/xuanwuqu");

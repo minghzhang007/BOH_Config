@@ -10,17 +10,17 @@
         <result property="bussinessType" column="bussiness_type"/>
         <result property="mark" column="mark"/>
         <result property="delFlag" column="del_flag"/>
+        <result property="systemId" column="system_id"/>
     </resultMap>
     
     <sql id="bohSwitchColumns">
-        id,identity,level,content,service_name,bussiness_type,mark,del_flag
+        id,identity,level,content,service_name,bussiness_type,mark,del_flag,system_id
     </sql>
 
     <select id="getAllBohSwitch" resultMap="bohSwitchDO">
         SELECT
         <include refid="bohSwitchColumns"/>
         FROM boh_switch
-        WHERE del_flag = 0
     </select>
     
     <select id="getBohSwitchByIdentity" resultMap="bohSwitchDO">
@@ -33,25 +33,31 @@
     <insert id="insertBohSwitch" >
         INSERT INTO boh_switch(
         identity,level,content,del_flag
-        <if test="serviceName != null">
+        <if test="serviceName != null  and serviceName != ''">
             ,service_name
         </if>
-        <if test="bussinessType != null">
+        <if test="bussinessType != null and bussinessType != 0">
             ,bussiness_type
         </if>
         <if test="mark != null">
             ,mark
         </if>
+        <if test="systemId != null">
+            ,system_id
+        </if>
         ) VALUES (
         #{identity},#{level},#{content},#{delFlag}
-        <if test="serviceName != null">
+        <if test="serviceName != null and serviceName != ''">
             ,#{serviceName}
         </if>
-        <if test="bussinessType != null">
+        <if test="bussinessType != null and bussinessType != 0">
             ,#{bussinessType}
         </if>
         <if test="mark != null">
             ,#{mark}
+        </if>
+        <if test="systemId != null">
+            ,#{systemId}
         </if>
         )
     </insert>
@@ -66,6 +72,9 @@
         </if>
         <if test="mark != null">
             ,mark = #{mark}
+        </if>
+        <if test="systemId != null">
+            ,system_id = #{systemId}
         </if>
         WHERE identity = #{identity}
     </update>

@@ -20,6 +20,8 @@ public class BohSwitchDO {
 
     private Integer delFlag;
 
+    private Integer systemId;
+
     public Integer getId() {
         return id;
     }
@@ -84,6 +86,14 @@ public class BohSwitchDO {
         this.delFlag = delFlag;
     }
 
+    public Integer getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(Integer systemId) {
+        this.systemId = systemId;
+    }
+
     public BohSwitchDO() {
     }
 
@@ -95,9 +105,10 @@ public class BohSwitchDO {
                 ", level=" + level +
                 ", content='" + content + '\'' +
                 ", serviceName='" + serviceName + '\'' +
-                ", bussinessType='" + bussinessType + '\'' +
+                ", bussinessType=" + bussinessType +
                 ", mark='" + mark + '\'' +
                 ", delFlag=" + delFlag +
+                ", systemId=" + systemId +
                 '}';
     }
 }

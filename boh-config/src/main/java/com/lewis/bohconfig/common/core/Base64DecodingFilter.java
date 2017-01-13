@@ -26,7 +26,8 @@ public class Base64DecodingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest)request;
         HttpServletResponse resp = (HttpServletResponse)response;
-        if (ifContainsInNoDecodeList(req.getServletPath())) {
+        String servletPath = req.getServletPath();
+        if (ifContainsInNoDecodeList(servletPath)) {
             chain.doFilter(req, resp);
         } else {
             Base64HttpServletRequestWrapper DecodingRequest = new Base64HttpServletRequestWrapper(req);

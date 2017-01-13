@@ -3,6 +3,7 @@ package com.lewis.bohconfig.controller;
 import com.lewis.bohconfig.common.enumer.Json;
 import com.lewis.bohconfig.domain.BohSwitchDO;
 import com.lewis.bohconfig.service.BohSwitchService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,6 @@ public class CRUDController {
     public String list(Model model) {
         List<BohSwitchDO> switches = bohSwitchService.getAllBohSwitch();
         model.addAttribute("switches", switches);
-        model.addAttribute("name", "lewis!");
         return "list";
     }
 
@@ -34,11 +34,19 @@ public class CRUDController {
         return "addSwitch";
     }
 
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
     public String addVarParam(@Json BohSwitchDO bohSwitchDO) {
         System.out.println(bohSwitchDO);
         if (bohSwitchDO != null) {
             bohSwitchService.insertBohSwitch(bohSwitchDO);
+        }
+        return "redirect:toList";
+    }
+
+    @RequestMapping(value = "/delete",method = RequestMethod.GET)
+    public String delete(String identity){
+        if (StringUtils.isNotEmpty(identity)) {
+            bohSwitchService.deleteBohSwitch(identity);
         }
         return "redirect:toList";
     }

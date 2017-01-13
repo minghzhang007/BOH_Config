@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page isELIgnored="false" %>
 <html>
@@ -8,12 +8,13 @@
 %>
 <head>
     <title>新增变量参数</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script type="text/javascript" src="<%=basePath%>/static/js/jquery.min.js"></script>
     <script type="text/javascript" src="<%=basePath%>/static/js/jquery.base64.js"></script>
 </head>
 <body>
 
-<form action="" method="post" id="form">
+<form action="" method="get" id="form">
 
     标识: <input type="text" id="identity" name="identity" value="开关标识"/> <br/>
     级别：<select id="level" name="level">
@@ -29,6 +30,14 @@
     有效性：
     <label><input type="radio" id="switchOn" name="delFlag" value="0" checked="checked"/>有效</label>
     <label><input type="radio" id="switchOff" name="delFlag" value="1"/>无效</label><br/>
+    所属系统：
+    <select id="systemId" name="systemId">
+        <option name="BOH-NM" value="1" selected="selected">BOH-NM</option>
+        <option name="BOH-PRC" value="2">BOH-PRC</option>
+        <option name="BOH-OTH" value="3">BOH-OTH</option>
+        <option name="BOH-CACHE" value="4">BOH-CACHE</option>
+        <option name="BOH-CNF" value="5">BOH-CNF</option>
+    </select>
     服务名：<input type="text" id="serviceName" name="serviceName" value=""/><br/>
     业务类型：<input type="text" id="bussinessType" name="bussinessType" value=""/><br/>
     <input type="button" value="send" id="send">
@@ -50,18 +59,20 @@
         });
         var url = "/boh-config/zk/add";
         var param = JSON.stringify(json);
-        var encodeParam = $.base64.encode(param)
-        url += "?" + encodeParam;
-        //window.location.href = url;
-        $.ajax({
+        $.base64.utf8encode=true;
+        param = $.base64.encode(param)
+        url += "?" + param;
+        window.location.href = url;
+       /* $.ajax({
             type:"post",
+            contentType:"application/x-www-form-urlencoded; charset=utf-8",
             data:encodeParam,
             url:url,
             dataType:'html',
             success:function(data){
                 alert(data);
             }
-        });
+        });*/
     });
 </script>
 </body>
