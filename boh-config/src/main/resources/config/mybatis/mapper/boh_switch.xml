@@ -22,6 +22,19 @@
         <include refid="bohSwitchColumns"/>
         FROM boh_switch
     </select>
+
+    <select id="getBohSwitchesPage" resultMap="bohSwitchDO">
+        SELECT
+        <include refid="bohSwitchColumns"/>
+        FROM boh_switch limit #{startIndex},#{numberPerPage}
+    </select>
+
+    <select id="getAllCount" resultType="java.lang.Integer">
+        SELECT
+        count(*)
+        FROM boh_switch
+    </select>
+
     
     <select id="getBohSwitchByIdentity" resultMap="bohSwitchDO">
         SELECT

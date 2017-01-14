@@ -1,6 +1,7 @@
 package com.lewis.bohconfig.service.impl;
 
 import com.lewis.bohconfig.common.business.SwitchWrapperUtil;
+import com.lewis.bohconfig.common.domain.PageParam;
 import com.lewis.bohconfig.common.domain.ZKNode;
 import com.lewis.bohconfig.dao.BohSwitchDao;
 import com.lewis.bohconfig.domain.BohSwitchDO;
@@ -16,8 +17,10 @@ import java.util.List;
 @Service
 public class BohSwitchServiceImpl implements BohSwitchService {
 
+/*
     @Resource
     private ZKManager zkManager;
+*/
 
     @Resource
     private BohSwitchDao bohSwitchDao;
@@ -26,7 +29,7 @@ public class BohSwitchServiceImpl implements BohSwitchService {
         ZKNode wrapper = SwitchWrapperUtil.wrapper(bohSwitchDO);
         bohSwitchDO.setIdentity(wrapper.getIdentity());
         int i = bohSwitchDao.insertBohSwitch(bohSwitchDO);
-        zkManager.createEphemeralNode(wrapper.getPath(),wrapper.getData());
+        //zkManager.createEphemeralNode(wrapper.getPath(),wrapper.getData());
         return i;
     }
 
@@ -44,5 +47,14 @@ public class BohSwitchServiceImpl implements BohSwitchService {
 
     public BohSwitchDO getBohSwitchByIdentity(String identity) {
         return bohSwitchDao.getBohSwitchByIdentity(identity);
+    }
+
+    public List<BohSwitchDO> getBohSwitchesPage(PageParam pageParam) {
+
+        return bohSwitchDao.getBohSwitchesPage(pageParam);
+    }
+
+    public int getAllCount() {
+        return bohSwitchDao.getAllCount();
     }
 }

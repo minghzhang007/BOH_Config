@@ -83,7 +83,6 @@
     </div>
 
     <script type="text/javascript" src="<%=basePath%>/static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="<%=basePath%>/static/js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="<%=basePath%>/static/js/layer.js"></script>
     <script type="text/javascript" src="<%=basePath%>/static/js/list.js"></script>
 </body>

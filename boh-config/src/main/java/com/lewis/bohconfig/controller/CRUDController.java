@@ -1,6 +1,8 @@
 package com.lewis.bohconfig.controller;
 
+import com.lewis.bohconfig.common.domain.PageParam;
 import com.lewis.bohconfig.common.enumer.Json;
+import com.lewis.bohconfig.common.util.JsonUtil;
 import com.lewis.bohconfig.common.util.Pager;
 import com.lewis.bohconfig.domain.BohSwitchDO;
 import com.lewis.bohconfig.service.BohSwitchService;
@@ -28,11 +30,31 @@ public class CRUDController {
     @RequestMapping("/toList")
     public String list(Model model) {
         List<BohSwitchDO> switches = bohSwitchService.getAllBohSwitch();
+        model.addAttribute("switches", switches);
+        return "list";
+    }
+
+    @RequestMapping("/paginationList")
+    public String paginationList() {
+       /* List<BohSwitchDO> switches = bohSwitchService.getAllBohSwitch();
         //model.addAttribute("switches", switches);
         Pager<BohSwitchDO> pager = new Pager<BohSwitchDO>(switches.size(),switches);
-        model.addAttribute("data",pager);
+        model.addAttribute("data",pager);*/
         return "paginationList";
     }
+
+    @RequestMapping("/getListJson")
+    @ResponseBody
+    public String getListJson(Integer page,Integer rows) {
+        PageParam pageParam = new PageParam((page-1)*rows,rows);
+        List<BohSwitchDO> switches = bohSwitchService.getBohSwitchesPage(pageParam);
+        int totalCount = bohSwitchService.getAllCount();
+        Pager<BohSwitchDO> pager = new Pager<BohSwitchDO>(totalCount,switches);
+        String jsonString = JsonUtil.toString(pager);
+        System.out.println(jsonString);
+        return jsonString;
+    }
+
 
     @RequestMapping("/toAdd")
     public String toAdd() {

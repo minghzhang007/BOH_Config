@@ -1,5 +1,6 @@
 package com.lewis.bohconfig.service;
 
+import com.lewis.bohconfig.common.domain.PageParam;
 import com.lewis.bohconfig.domain.BohSwitchDO;
 
 import java.util.List;
@@ -18,4 +19,8 @@ public interface BohSwitchService {
     List<BohSwitchDO> getAllBohSwitch();
 
     BohSwitchDO getBohSwitchByIdentity(String identity);
+
+    List<BohSwitchDO> getBohSwitchesPage(PageParam pageParam);
+
+    int getAllCount();
 }
