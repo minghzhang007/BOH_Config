@@ -15,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Created by zhangminghua on 2017/1/7.
  */
-@Component
+//@Component
 public class ZKManager {
     private final CuratorFramework client;
 
