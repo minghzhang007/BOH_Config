@@ -75,7 +75,6 @@
         $.base64.utf8encode=true;
         param = $.base64.encode(param)
         url += "?" + param;
-        //window.location.href = url;
         $.ajax({
             type:'post',
             data:param,

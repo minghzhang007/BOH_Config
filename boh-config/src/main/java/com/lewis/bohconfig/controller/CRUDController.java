@@ -1,6 +1,7 @@
 package com.lewis.bohconfig.controller;
 
 import com.lewis.bohconfig.common.enumer.Json;
+import com.lewis.bohconfig.common.util.Pager;
 import com.lewis.bohconfig.domain.BohSwitchDO;
 import com.lewis.bohconfig.service.BohSwitchService;
 import org.apache.commons.lang3.StringUtils;
@@ -27,8 +28,10 @@ public class CRUDController {
     @RequestMapping("/toList")
     public String list(Model model) {
         List<BohSwitchDO> switches = bohSwitchService.getAllBohSwitch();
-        model.addAttribute("switches", switches);
-        return "list";
+        //model.addAttribute("switches", switches);
+        Pager<BohSwitchDO> pager = new Pager<BohSwitchDO>(switches.size(),switches);
+        model.addAttribute("data",pager);
+        return "paginationList";
     }
 
     @RequestMapping("/toAdd")
