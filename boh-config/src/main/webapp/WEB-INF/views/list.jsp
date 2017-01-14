@@ -9,7 +9,7 @@
 %>
 <head>
     <title>列表页</title>
-
+    <link href="<%=basePath%>/static/css/layer.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
     <div style="text-align: center">
@@ -76,13 +76,14 @@
                             <td>无效</td>
                         </c:otherwise>
                     </c:choose>
-                    <td>修改 <input type="button" id="delete" name="delete" value="删除"/>  <input type="button" id="add" name="add" value="新增"/></td>
+                    <td><input type="button" class="update" value="修改"/> <input type="button" class="delete" value="删除"/>  <input type="button" class="add" value="新增"/></td>
                 </tr>
             </c:forEach>
         </table>
     </div>
 
     <script type="text/javascript" src="<%=basePath%>/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>/static/js/layer.js"></script>
     <script type="text/javascript" src="<%=basePath%>/static/js/list.js"></script>
 </body>
 </html>

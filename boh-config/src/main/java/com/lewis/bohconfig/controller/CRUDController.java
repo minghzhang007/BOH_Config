@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -49,6 +51,23 @@ public class CRUDController {
             bohSwitchService.deleteBohSwitch(identity);
         }
         return "redirect:toList";
+    }
+
+    @RequestMapping(value = "/toUpdate",method = RequestMethod.GET)
+    public String toUpdate(@RequestParam  String identity,Model model){
+        BohSwitchDO bohSwitch = bohSwitchService.getBohSwitchByIdentity(identity);
+        model.addAttribute("bohSwitch",bohSwitch);
+        return "update";
+    }
+
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    @ResponseBody
+    public String update(@Json BohSwitchDO bohSwitchDO,Model model){
+        bohSwitchService.updateBohSwitch(bohSwitchDO);
+        List<BohSwitchDO> switches = bohSwitchService.getAllBohSwitch();
+        model.addAttribute("switches", switches);
+        String flag= "{\"success\":true}";
+        return flag;
     }
 
 }
