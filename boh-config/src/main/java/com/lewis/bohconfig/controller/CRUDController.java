@@ -34,12 +34,8 @@ public class CRUDController {
         return "list";
     }
 
-    @RequestMapping("/paginationList")
+    @RequestMapping("/toPaginationList")
     public String paginationList() {
-       /* List<BohSwitchDO> switches = bohSwitchService.getAllBohSwitch();
-        //model.addAttribute("switches", switches);
-        Pager<BohSwitchDO> pager = new Pager<BohSwitchDO>(switches.size(),switches);
-        model.addAttribute("data",pager);*/
         return "paginationList";
     }
 
@@ -61,13 +57,15 @@ public class CRUDController {
         return "addSwitch";
     }
 
-    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @ResponseBody
     public String addVarParam(@Json BohSwitchDO bohSwitchDO) {
         System.out.println(bohSwitchDO);
         if (bohSwitchDO != null) {
             bohSwitchService.insertBohSwitch(bohSwitchDO);
         }
-        return "redirect:toList";
+        String flag= "{\"success\":true}";
+        return flag;
     }
 
     @RequestMapping(value = "/delete",method = RequestMethod.GET)
@@ -75,7 +73,7 @@ public class CRUDController {
         if (StringUtils.isNotEmpty(identity)) {
             bohSwitchService.deleteBohSwitch(identity);
         }
-        return "redirect:toList";
+        return "redirect:toPaginationList";
     }
 
     @RequestMapping(value = "/toUpdate",method = RequestMethod.GET)

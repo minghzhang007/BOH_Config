@@ -45,11 +45,14 @@
                /* console.info(index);
                 console.info(record);*/
             },
-            frozenColumns: [[
+            columns: [[
                 {
                     field: 'identity',
                     width: 180,
-                    title: '开关标识'
+                    title: '开关标识',
+                    formatter:function(value,record,index){
+                        return '<span title='+value+'>'+value+'</span>';
+                    }
                 },
                 {
                     field: 'level',
@@ -79,12 +82,18 @@
                 {
                     field: 'content',
                     width: 250,
-                    title: '内容'
+                    title: '内容',
+                    formatter:function(value,record,index){
+                        return '<span title='+value+'>'+value+'</span>';
+                    }
                 },
                 {
                     field: 'mark',
                     width: 250,
-                    title: '描述'
+                    title: '描述',
+                    formatter:function(value,record,index){
+                        return '<span title='+value+'>'+value+'</span>';
+                    }
                 },
                 {
                     field: 'systemId',
@@ -120,13 +129,62 @@
                             return "无效";
                         }
                     }
+                },
+                {
+                    field:'opt',
+                    width:200,
+                    title:'操作',
+                    align:'center',
+                    formatter:function(value,record,index){
+                        var btn = '<a onclick="update(\''+record.identity+'\')" href="javascript:void(0)">编辑</a> '+
+                                ' <a onclick="remove(\''+record.identity+'\')" href="javascript:void(0)">删除</a>';
+                        return  btn;
+                    }
                 }
             ]],
             pagination: true,//分页
-            pageSize: 5,//默认选择的分页是每页5行数据
-            pageList: [5, 10, 15, 20]//可以选择的分页集合
+            pageSize: 20,//默认选择的分页是每页5行数据
+            pageList: [5, 10, 15, 20,40,100],//可以选择的分页集合
+            toolbar:[
+                {
+                    text:'新增开关' ,
+                    iconCls:'icon-add' ,
+                    handler:function(){
+                        var url ="/boh-config/zk/toAdd"
+                        layer.open({
+                            type:2,
+                            shade: [0.5, '#000', false],
+                            fix: false, //不固定
+                            maxmin: true,
+                            title: ['新增开关开关', false],
+                            area: ['700px', '500px'],
+                            content:url
+                        })
+                    }
+                }
+            ]
         });
     });
+
+
+    function update(identity){
+        var url ="/boh-config/zk/toUpdate?identity="+identity
+        layer.open({
+            type:2,
+            shade: [0.5, '#000', false],
+            fix: false, //不固定
+            maxmin: true,
+            title: ['修改开关', false],
+            area: ['700px', '500px'],
+            content:url
+        })
+    }
+
+    function remove(identity){
+        var url = "/boh-config/zk/delete?identity="+identity;
+        window.location.href =url;
+    }
+
 </script>
 </body>
 </html>

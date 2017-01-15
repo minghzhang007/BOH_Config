@@ -62,17 +62,19 @@
         $.base64.utf8encode=true;
         param = $.base64.encode(param)
         url += "?" + param;
-        window.location.href = url;
-       /* $.ajax({
-            type:"post",
-            contentType:"application/x-www-form-urlencoded; charset=utf-8",
-            data:encodeParam,
+        //window.location.href = url;
+
+        $.ajax({
+            type:'post',
+            data:param,
+            dataType:"json",
             url:url,
-            dataType:'html',
             success:function(data){
-                alert(data);
+                parent.window.location.href="/boh-config/zk/toPaginationList";
+                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                parent.layer.close(index);
             }
-        });*/
+        });
     });
 </script>
 </body>

@@ -81,7 +81,7 @@
             dataType:"json",
             url:url,
             success:function(data){
-                parent.window.location.href="/boh-config/zk/toList";
+                parent.window.location.href="/boh-config/zk/toPaginationList";
                 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                 parent.layer.close(index);
             }
