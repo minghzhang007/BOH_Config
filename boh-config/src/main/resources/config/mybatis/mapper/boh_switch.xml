@@ -42,6 +42,16 @@
         FROM boh_switch
         WHERE identity = #{identity}
     </select>
+
+    <select id="queryAvaliableSwitches" resultMap="bohSwitchDO">
+        SELECT
+        <include refid="bohSwitchColumns"/>
+        FROM boh_switch
+        WHERE del_flag = 0
+        <if test="systemId != null">
+          AND system_id = #{systemId}
+        </if>
+    </select>
     
     <insert id="insertBohSwitch" >
         INSERT INTO boh_switch(

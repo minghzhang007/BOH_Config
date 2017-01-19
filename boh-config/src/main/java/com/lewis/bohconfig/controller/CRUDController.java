@@ -2,10 +2,13 @@ package com.lewis.bohconfig.controller;
 
 import com.lewis.bohconfig.common.domain.PageParam;
 import com.lewis.bohconfig.common.enumer.Json;
+import com.lewis.bohconfig.common.enumer.ResponseJson;
 import com.lewis.bohconfig.common.util.JsonUtil;
 import com.lewis.bohconfig.common.util.Pager;
+import com.lewis.bohconfig.domain.AppDO;
 import com.lewis.bohconfig.domain.BohSwitchDO;
 import com.lewis.bohconfig.service.BohSwitchService;
+import com.tuniu.operation.platform.tsg.client.annotation.TSPServiceInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,6 +94,14 @@ public class CRUDController {
         model.addAttribute("switches", switches);
         String flag= "{\"success\":true}";
         return flag;
+    }
+
+    @ResponseJson
+    @RequestMapping("/queryAvailableSwitches")
+    @TSPServiceInfo(name ="BOH.CNF.CRUDController.queryAvailableSwitches",description = "查询BOH应用的开关数据")
+    public List<BohSwitchDO> queryAvailableSwitches(@Json AppDO appDO){
+        List<BohSwitchDO> bohSwitchDOs = bohSwitchService.queryAvaliableSwitches(appDO);
+        return bohSwitchDOs;
     }
 
 }

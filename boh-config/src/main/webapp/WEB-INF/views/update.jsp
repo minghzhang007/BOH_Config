@@ -16,9 +16,9 @@
 
 <form action="" method="get" id="form">
 
-    标识: <input type="text" id="identity" name="identity" value="${bohSwitch.identity}"/> <br/>
+    标识: <input type="text" id="identity" name="identity" value="${bohSwitch.identity}" readonly="readonly"/> <br/>
     <input type="hidden" name="level" value="${bohSwitch.level}"/>
-    级别：<select id="level" name="level" >
+    级别：<select id="level" name="level" disabled="disabled">
         <option  value="1">接口级别</option>
         <option  value="2">业务类型级别</option>
         <option  value="3" >功能级别</option>
@@ -34,7 +34,7 @@
     <label><input type="radio" id="switchOff" name="delFlag" value="1"/>无效</label><br/>
     <input type="hidden" name="systemId" value="${bohSwitch.systemId}"/>
     所属系统：
-    <select id="systemId" name="systemId">
+    <select id="systemId" name="systemId" disabled="disabled">
         <option  value="1">BOH-NM</option>
         <option  value="2">BOH-PRC</option>
         <option  value="3">BOH-OTH</option>
@@ -42,8 +42,8 @@
         <option  value="5">BOH-CNF</option>
     </select>
     <br/>
-    服务名：<input type="text" id="serviceName" name="serviceName" value="${bohSwitch.serviceName}"/><br/>
-    业务类型：<input type="text" id="bussinessType" name="bussinessType" value="${bohSwitch.bussinessType}"/><br/>
+    服务名：<input type="text" id="serviceName" name="serviceName" value="${bohSwitch.serviceName}" readonly="readonly"/><br/>
+    业务类型：<input type="text" id="bussinessType" name="bussinessType" value="${bohSwitch.bussinessType}" readonly="readonly"/><br/>
     <input type="button" value="update" id="update">
 </form>
 <script>

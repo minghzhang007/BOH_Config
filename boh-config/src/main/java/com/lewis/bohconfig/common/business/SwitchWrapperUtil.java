@@ -1,6 +1,7 @@
 package com.lewis.bohconfig.common.business;
 
 import com.lewis.bohconfig.common.domain.ZKNode;
+import com.lewis.bohconfig.common.enumer.OperationEnum;
 import com.lewis.bohconfig.common.enumer.SwitchEnum;
 import com.lewis.bohconfig.common.enumer.SystemEnum;
 import com.lewis.bohconfig.common.util.JsonUtil;
@@ -16,16 +17,22 @@ public class SwitchWrapperUtil {
 
     private SwitchWrapperUtil(){}
 
-    public static ZKNode wrapper(BohSwitchDO bohSwitchDO){
+    public static ZKNode wrapper(BohSwitchDO bohSwitchDO, OperationEnum operationEnum){
         try {
             ZKNode zkNode = new ZKNode();
             zkNode.setData(bohSwitchDO.getContent());
             String systemName = SystemEnum.of(bohSwitchDO.getSystemId()).getSystemName();
             String namePre = SwitchEnum.of(bohSwitchDO.getLevel()).getNamePre();
             StringBuilder sb = new StringBuilder();
-            sb.append("/").append(systemName).append("/").append(namePre).append(bohSwitchDO.getIdentity());
+            sb.append("/").append(systemName).append("/");
+            if (operationEnum == OperationEnum.CREATE) {
+                sb.append(namePre);
+                zkNode.setIdentity(namePre+bohSwitchDO.getIdentity());
+            }else{
+                zkNode.setIdentity(bohSwitchDO.getIdentity());
+            }
+            sb.append(bohSwitchDO.getIdentity());
             zkNode.setPath(sb.toString());
-            zkNode.setIdentity(namePre+bohSwitchDO.getIdentity());
             return zkNode;
         } catch (Exception e) {
             LOG.error("SwitchWrapperUtil.wrapper param is {},error is {}", JsonUtil.toString(bohSwitchDO),e);

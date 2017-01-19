@@ -8,7 +8,7 @@ public class ResponseVo {
 
     private String msg;
 
-    private int resultCode;
+    private int errorCode;
 
     private Object data;
 
@@ -28,12 +28,12 @@ public class ResponseVo {
         this.msg = msg;
     }
 
-    public int getResultCode() {
-        return resultCode;
+    public int getErrorCode() {
+        return errorCode;
     }
 
-    public void setResultCode(int resultCode) {
-        this.resultCode = resultCode;
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
     }
 
     public Object getData() {
@@ -52,7 +52,7 @@ public class ResponseVo {
         return "ResponseVo{" +
                 "isSuccess=" + isSuccess +
                 ", msg='" + msg + '\'' +
-                ", resultCode=" + resultCode +
+                ", errorCode=" + errorCode +
                 ", data=" + data +
                 '}';
     }

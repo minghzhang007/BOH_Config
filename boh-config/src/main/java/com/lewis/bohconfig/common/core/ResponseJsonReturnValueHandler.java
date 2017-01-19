@@ -34,7 +34,7 @@ public class ResponseJsonReturnValueHandler implements HandlerMethodReturnValueH
             responseVo.setData(returnValue);
             responseVo.setMsg("OK");
             responseVo.setSuccess(true);
-            responseVo.setResultCode(0);
+            responseVo.setErrorCode(0);
         }else {
             responseVo = (ResponseVo)returnValue;
         }

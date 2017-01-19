@@ -19,7 +19,7 @@
     </table>
 </div>
 
-<script type="text/javascript" src="<%=basePath%>/static/js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/layer.js"></script>
@@ -34,7 +34,7 @@
             striped: true,//设置为true将交替显示行背景。
             collapsible: true,//显示可折叠按钮
             toolbar: "#tb",//在添加 增添、删除、修改操作的按钮要用到这个
-            url: '/boh-config/zk/getListJson',//url调用Action方法
+            url: '/boh-cnf/zk/getListJson',//url调用Action方法
             loadMsg: '数据装载中......',
             singleSelect: true,//为true时只能选择单行
             fitColumns: true,//允许表格自动缩放，以适应父容器
@@ -150,7 +150,7 @@
                     text:'新增开关' ,
                     iconCls:'icon-add' ,
                     handler:function(){
-                        var url ="/boh-config/zk/toAdd"
+                        var url ="/boh-cnf/zk/toAdd"
                         layer.open({
                             type:2,
                             shade: [0.5, '#000', false],
@@ -168,7 +168,7 @@
 
 
     function update(identity){
-        var url ="/boh-config/zk/toUpdate?identity="+identity
+        var url ="/boh-cnf/zk/toUpdate?identity="+identity
         layer.open({
             type:2,
             shade: [0.5, '#000', false],
@@ -181,7 +181,7 @@
     }
 
     function remove(identity){
-        var url = "/boh-config/zk/delete?identity="+identity;
+        var url = "/boh-cnf/zk/delete?identity="+identity;
         window.location.href =url;
     }
 

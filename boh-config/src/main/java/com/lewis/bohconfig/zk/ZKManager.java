@@ -15,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Created by zhangminghua on 2017/1/7.
  */
-//@Component
+@Component
 public class ZKManager {
     private final CuratorFramework client;
 
@@ -60,9 +60,17 @@ public class ZKManager {
         }
     }
 
-    public void deleteNode(String path) {
+    public void deleteNodeIncludeChildren(String path) {
         try {
             client.delete().deletingChildrenIfNeeded().forPath(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteNode(String path) {
+        try {
+            client.delete().forPath(path);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,10 +88,12 @@ public class ZKManager {
 
     public static void main(String[] args) throws Exception {
         ZKManager zkManager = new ZKManager();
-        String path = "/jiangsu/nanjing";
+      /*  String path = "/jiangsu/nanjing";
         //testGenOrderNo();
         //distributionLock(zkManager.client,path);
-        testPathChildCache(zkManager,path);
+        testPathChildCache(zkManager,path);*/
+        String path ="/varParam";
+        zkManager.deleteNodeIncludeChildren(path);
     }
 
     private static void testGenOrderNo(){
@@ -159,8 +169,8 @@ public class ZKManager {
         zkManager.createEphemeralNode(path+"/xuanwuqu","xuanwuqu");
         Thread.sleep(1000);
         zkManager.setData(path+"/xuanwuqu","xuanwuqubianle");
-        zkManager.deleteNode(path+"/xuanwuqu");
-        zkManager.deleteNode(path);
+        zkManager.deleteNodeIncludeChildren(path+"/xuanwuqu");
+        zkManager.deleteNodeIncludeChildren(path);
         Thread.sleep(2000);
     }
 
@@ -175,7 +185,7 @@ public class ZKManager {
         });
         zkManager.setData(path,"jiangling");
         Thread.sleep(1000);
-        zkManager.deleteNode(path);
+        zkManager.deleteNodeIncludeChildren(path);
         Thread.sleep(5000);
     }
 

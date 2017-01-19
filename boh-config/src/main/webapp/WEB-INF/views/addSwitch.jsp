@@ -38,6 +38,7 @@
         <option name="BOH-CACHE" value="4">BOH-CACHE</option>
         <option name="BOH-CNF" value="5">BOH-CNF</option>
     </select>
+    <br/>
     服务名：<input type="text" id="serviceName" name="serviceName" value=""/><br/>
     业务类型：<input type="text" id="bussinessType" name="bussinessType" value=""/><br/>
     <input type="button" value="send" id="send">
@@ -57,7 +58,7 @@
         $.each(serializeArray, function (i, field) {
             json[this.name] = this.value;
         });
-        var url = "/boh-config/zk/add";
+        var url = "/boh-cnf/zk/add";
         var param = JSON.stringify(json);
         $.base64.utf8encode=true;
         param = $.base64.encode(param)
@@ -70,7 +71,7 @@
             dataType:"json",
             url:url,
             success:function(data){
-                parent.window.location.href="/boh-config/zk/toPaginationList";
+                parent.window.location.href="/boh-cnf/zk/toPaginationList";
                 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                 parent.layer.close(index);
             }

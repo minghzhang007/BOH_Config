@@ -1,9 +1,9 @@
 package com.lewis.bohconfig.dao;
 
 import com.lewis.bohconfig.common.domain.PageParam;
+import com.lewis.bohconfig.domain.AppDO;
 import com.lewis.bohconfig.domain.BohSwitchDO;
 
-import javax.print.attribute.standard.PageRanges;
 import java.util.List;
 
 /**
@@ -24,5 +24,5 @@ public interface BohSwitchDao {
     List<BohSwitchDO> getBohSwitchesPage(PageParam pageParam);
 
     int getAllCount();
-
+    List<BohSwitchDO> queryAvaliableSwitches(AppDO appDO);
 }
