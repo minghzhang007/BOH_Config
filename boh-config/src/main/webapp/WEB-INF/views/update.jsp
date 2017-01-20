@@ -70,7 +70,7 @@
         $.each(serializeArray, function (i, field) {
             json[this.name] = this.value;
         });
-        var url = "/boh-config/zk/update";
+        var url = "/boh-cnf/zk/update";
         var param = JSON.stringify(json);
         $.base64.utf8encode=true;
         param = $.base64.encode(param)
@@ -81,7 +81,7 @@
             dataType:"json",
             url:url,
             success:function(data){
-                parent.window.location.href="/boh-config/zk/toPaginationList";
+                parent.window.location.href="/boh-cnf/zk/toPaginationList";
                 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                 parent.layer.close(index);
             }

@@ -1,15 +1,15 @@
 $(".add").click(function(){
-    var url = "/boh-config/zk/toAdd";
+    var url = "/boh-cnf/zk/toAdd";
     window.location.href=url;
 });
 $(".delete").click(function () {
     var identity = $(this).parent().parent().children("td").eq(0).text();
-    var url = "/boh-config/zk/delete?identity="+identity;
+    var url = "/boh-cnf/zk/delete?identity="+identity;
     window.location.href =url;
 });
 $(".update").click(function(){
     var identity = $(this).parent().parent().children("td").eq(0).text();
-    var url ="/boh-config/zk/toUpdate?identity="+identity
+    var url ="/boh-cnf/zk/toUpdate?identity="+identity
     layer.open({
         type:2,
         shade: [0.5, '#000', false],

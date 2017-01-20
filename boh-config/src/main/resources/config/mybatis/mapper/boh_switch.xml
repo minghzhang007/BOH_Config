@@ -51,6 +51,12 @@
         <if test="systemId != null">
           AND system_id = #{systemId}
         </if>
+        <if test="identities != null and identities.size > 0">
+            AND identity IN 
+            <foreach collection="identities" open="(" close=")" separator="," item="identity">
+                #{identity}
+            </foreach>
+        </if>
     </select>
     
     <insert id="insertBohSwitch" >
