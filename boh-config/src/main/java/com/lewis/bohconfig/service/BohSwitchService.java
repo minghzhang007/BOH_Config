@@ -3,6 +3,7 @@ package com.lewis.bohconfig.service;
 import com.lewis.bohconfig.common.domain.PageParam;
 import com.lewis.bohconfig.domain.AppDO;
 import com.lewis.bohconfig.domain.BohSwitchDO;
+import com.lewis.bohconfig.domain.BohSwitchDOWithHost;
 
 import java.util.List;
 
@@ -15,13 +16,13 @@ public interface BohSwitchService {
 
     int deleteBohSwitch(String identity);
 
-    int updateBohSwitch(BohSwitchDO bohSwitchDO);
+    int updateBohSwitch(BohSwitchDOWithHost bohSwitchDO);
 
     List<BohSwitchDO> getAllBohSwitch();
 
     BohSwitchDO getBohSwitchByIdentity(String identity);
 
-    List<BohSwitchDO> getBohSwitchesPage(PageParam pageParam);
+    List<BohSwitchDOWithHost> getBohSwitchesPage(PageParam pageParam);
 
     int getAllCount();
 

@@ -7,6 +7,8 @@ import com.lewis.bohconfig.common.util.JsonUtil;
 import com.lewis.bohconfig.common.util.Pager;
 import com.lewis.bohconfig.domain.AppDO;
 import com.lewis.bohconfig.domain.BohSwitchDO;
+import com.lewis.bohconfig.domain.BohSwitchDOWithHost;
+import com.lewis.bohconfig.domain.UpdateRequestVo;
 import com.lewis.bohconfig.service.BohSwitchService;
 import com.tuniu.operation.platform.tsg.client.annotation.TSPServiceInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -46,12 +47,10 @@ public class CRUDController {
     @ResponseBody
     public String getListJson(Integer page,Integer rows) {
         PageParam pageParam = new PageParam((page-1)*rows,rows);
-        List<BohSwitchDO> switches = bohSwitchService.getBohSwitchesPage(pageParam);
+        List<BohSwitchDOWithHost> switches = bohSwitchService.getBohSwitchesPage(pageParam);
         int totalCount = bohSwitchService.getAllCount();
-        Pager<BohSwitchDO> pager = new Pager<BohSwitchDO>(totalCount,switches);
-        String jsonString = JsonUtil.toString(pager);
-        System.out.println(jsonString);
-        return jsonString;
+        Pager<BohSwitchDOWithHost> pager = new Pager<BohSwitchDOWithHost>(totalCount,switches);
+        return  JsonUtil.toString(pager);
     }
 
 
@@ -80,15 +79,16 @@ public class CRUDController {
     }
 
     @RequestMapping(value = "/toUpdate",method = RequestMethod.GET)
-    public String toUpdate(@RequestParam  String identity,Model model){
-        BohSwitchDO bohSwitch = bohSwitchService.getBohSwitchByIdentity(identity);
+    public String toUpdate(@Json UpdateRequestVo requestVo, Model model){
+        BohSwitchDO bohSwitch = bohSwitchService.getBohSwitchByIdentity(requestVo.getIdentity());
         model.addAttribute("bohSwitch",bohSwitch);
+        model.addAttribute("hosts",requestVo.getHosts());
         return "update";
     }
 
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     @ResponseBody
-    public String update(@Json BohSwitchDO bohSwitchDO,Model model){
+    public String update(@Json BohSwitchDOWithHost bohSwitchDO,Model model){
         bohSwitchService.updateBohSwitch(bohSwitchDO);
         List<BohSwitchDO> switches = bohSwitchService.getAllBohSwitch();
         model.addAttribute("switches", switches);

@@ -23,6 +23,7 @@
 <script type="text/javascript" src="<%=basePath%>/static/js/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath%>/static/js/layer.js"></script>
+<script type="text/javascript" src="<%=basePath%>/static/js/jquery.base64.js"></script>
 <script type="text/javascript">
     $(function () {
         $('#mydatagrid').datagrid({
@@ -129,6 +130,20 @@
                             return "无效";
                         }
                     }
+                }
+                ,
+                {
+                    field: 'hosts',
+                    width: 200,
+                    title: 'Host信息',
+                    formatter: function (value, record, index) {
+                        var length = value.length;
+                        var btn ='<a onclick="allChoose()" href="javascript:void(0)">全选</a><br/>';
+                        for(var i=0;i<length;i++){
+                            btn += '<label><input type="checkbox" name="host" value='+value[i]+'></input>'+value[i]+'</label> <br/>';
+                        }
+                       return btn;
+                    }
                 },
                 {
                     field:'opt',
@@ -166,9 +181,32 @@
         });
     });
 
+    function allChoose(){
+       var $td = $("td[field=hosts]");
+        var children = $td.children("input[name=host]:checkbox");
+        children.attr("checked",true);
+        //$("input[name=host]:checkbox").attr("checked",true);
+    }
 
     function update(identity){
-        var url ="/boh-cnf/zk/toUpdate?identity="+identity
+        var param = '{"hosts":[';
+        var containHost = false;
+        $("input[name=host]:checkbox").each(function(i,field){
+            if ($(this).attr("checked")){
+                param +='"'+$(this).val()+'",';
+                containHost = true;
+            }
+        });
+        if (containHost){
+            param = param.substr(0,param.length-1);
+        }
+        param +='],"identity":'+'"'+identity+'"';
+        param +='}';
+        console.info(param);
+        var url ="/boh-cnf/zk/toUpdate";
+        $.base64.utf8encode=true;
+        param = $.base64.encode(param)
+        url +="?"+param;
         layer.open({
             type:2,
             shade: [0.5, '#000', false],

@@ -7,9 +7,13 @@ import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -17,6 +21,8 @@ import java.util.concurrent.CountDownLatch;
  */
 @Component
 public class ZKManager {
+
+    private Logger LOG = LoggerFactory.getLogger(ZKManager.class);
     private final CuratorFramework client;
 
     private ZKManager() {
@@ -31,7 +37,7 @@ public class ZKManager {
             if (stat == null) {
                 client.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath(path, data.getBytes("utf-8"));
             } else {
-                System.out.println(path + " 节点已经存在！不要重复创建！");
+                System.out.println("【节点已经存在！不要重复创建！】" + path);
             }
 
         } catch (Exception e) {
@@ -39,7 +45,7 @@ public class ZKManager {
         }
     }
 
-    public void createEphemeralNode(String path,String data){
+    public void createEphemeralNode(String path, String data) {
         try {
             Stat stat = client.checkExists().forPath(path);
             if (stat == null) {
@@ -52,9 +58,9 @@ public class ZKManager {
         }
     }
 
-    public void setData(String path,String data){
+    public void setData(String path, String data) {
         try {
-            client.setData().forPath(path,data.getBytes("utf-8"));
+            client.setData().forPath(path, data.getBytes("utf-8"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -86,20 +92,75 @@ public class ZKManager {
         return "";
     }
 
+    public void addPathChildrenListener(String path) {
+        try {
+            PathChildrenCache pathChildrenCache = new PathChildrenCache(client, path, true);
+            pathChildrenCache.start(PathChildrenCache.StartMode.POST_INITIALIZED_EVENT);
+            pathChildrenCache.getListenable().addListener(new PathChildrenCacheListener() {
+                public void childEvent(CuratorFramework client, PathChildrenCacheEvent event) throws Exception {
+                    switch (event.getType()) {
+                        case CHILD_ADDED:
+                            System.out.println("【子节点新增】：" + event.getData().getPath());
+                            break;
+                        case CHILD_UPDATED:
+                            System.out.println("【子节点修改】：" + event.getData().getPath());
+                            break;
+                        case CHILD_REMOVED:
+                            System.out.println("【子节点删除】：" + event.getData().getPath());
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        } catch (Exception e) {
+
+        }
+    }
+
+    public List<String> getChildren(String path) {
+        try {
+            List<String> children = client.getChildren().forPath(path);
+            return children;
+        } catch (Exception e) {
+            LOG.error("getChildren path {} ,error {}", path, e);
+        }
+        return null;
+    }
+
+    public void addPathListener(String path) {
+        final NodeCache nodeCache = new NodeCache(client, path, false);
+        try {
+            nodeCache.start();
+            nodeCache.getListenable().addListener(new NodeCacheListener() {
+                public void nodeChanged() throws Exception {
+                    System.out.println("【节点改变：】" + nodeCache.getCurrentData().getPath());
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public CuratorFramework getClient() {
+        return client;
+    }
+
     public static void main(String[] args) throws Exception {
         ZKManager zkManager = new ZKManager();
       /*  String path = "/jiangsu/nanjing";
         //testGenOrderNo();
         //distributionLock(zkManager.client,path);
         testPathChildCache(zkManager,path);*/
-        String path ="/varParam";
+        String path = "/varParam";
         zkManager.deleteNodeIncludeChildren(path);
     }
 
-    private static void testGenOrderNo(){
+    private static void testGenOrderNo() {
         final CountDownLatch latch = new CountDownLatch(1);
         for (int i = 0; i < 10; i++) {
-            new Thread(){
+            new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -109,29 +170,29 @@ public class ZKManager {
                     }
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss|SSS");
                     String orderNo = sdf.format(new Date());
-                    System.out.println("订单号："+orderNo);
+                    System.out.println("订单号：" + orderNo);
                 }
             }.start();
         }
         latch.countDown();
     }
 
-    public static void distributionLock(CuratorFramework client,String path){
-        final InterProcessMutex lock = new InterProcessMutex(client,path);
+    public static void distributionLock(CuratorFramework client, String path) {
+        final InterProcessMutex lock = new InterProcessMutex(client, path);
         final CountDownLatch latch = new CountDownLatch(1);
         for (int i = 0; i < 10; i++) {
-            new Thread(){
+            new Thread() {
                 @Override
                 public void run() {
                     try {
                         latch.await();
                         lock.acquire();
-                    }catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss|SSS");
                     String orderNo = sdf.format(new Date());
-                    System.out.println("订单号："+orderNo);
+                    System.out.println("订单号：" + orderNo);
                     try {
                         lock.release();
                     } catch (Exception e) {
@@ -144,46 +205,46 @@ public class ZKManager {
     }
 
     private static void testPathChildCache(final ZKManager zkManager, final String path) throws Exception {
-        PathChildrenCache cache = new PathChildrenCache(zkManager.client,path,true);
+        PathChildrenCache cache = new PathChildrenCache(zkManager.client, path, true);
         cache.start(PathChildrenCache.StartMode.POST_INITIALIZED_EVENT);
         cache.getListenable().addListener(new PathChildrenCacheListener() {
             public void childEvent(CuratorFramework client, PathChildrenCacheEvent event) throws Exception {
-                switch (event.getType()){
+                switch (event.getType()) {
                     case CHILD_ADDED:
-                        System.out.println("子节点新增 :"+event.getData().getPath());
+                        System.out.println("子节点新增 :" + event.getData().getPath());
                         break;
                     case CHILD_REMOVED:
-                        System.out.println("子节点移除 :"+event.getData().getPath());
+                        System.out.println("子节点移除 :" + event.getData().getPath());
                         break;
                     case CHILD_UPDATED:
                         String s = zkManager.readNode(path + "/xuanwuqu");
-                        System.out.println("子节点更新 :"+event.getData().getPath() +" ,new Data:"+s);
+                        System.out.println("子节点更新 :" + event.getData().getPath() + " ,new Data:" + s);
                         break;
                     default:
                         break;
                 }
             }
         });
-        zkManager.createEphemeralNode(path,"nanjing");
+        zkManager.createEphemeralNode(path, "nanjing");
         Thread.sleep(1000);
-        zkManager.createEphemeralNode(path+"/xuanwuqu","xuanwuqu");
+        zkManager.createEphemeralNode(path + "/xuanwuqu", "xuanwuqu");
         Thread.sleep(1000);
-        zkManager.setData(path+"/xuanwuqu","xuanwuqubianle");
-        zkManager.deleteNodeIncludeChildren(path+"/xuanwuqu");
+        zkManager.setData(path + "/xuanwuqu", "xuanwuqubianle");
+        zkManager.deleteNodeIncludeChildren(path + "/xuanwuqu");
         zkManager.deleteNodeIncludeChildren(path);
         Thread.sleep(2000);
     }
 
     private static void testNodeCache(ZKManager zkManager, String path) throws Exception {
-        zkManager.createEphemeralNode(path,"nanjing");
-        final NodeCache nodeCache = new NodeCache(zkManager.client,path,false);
+        zkManager.createEphemeralNode(path, "nanjing");
+        final NodeCache nodeCache = new NodeCache(zkManager.client, path, false);
         nodeCache.start();
         nodeCache.getListenable().addListener(new NodeCacheListener() {
             public void nodeChanged() throws Exception {
-                System.out.println("节点数据发生改变,新数据为:"+ new String(nodeCache.getCurrentData().getData()));
+                System.out.println("节点数据发生改变,新数据为:" + new String(nodeCache.getCurrentData().getData()));
             }
         });
-        zkManager.setData(path,"jiangling");
+        zkManager.setData(path, "jiangling");
         Thread.sleep(1000);
         zkManager.deleteNodeIncludeChildren(path);
         Thread.sleep(5000);

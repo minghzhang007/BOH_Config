@@ -44,6 +44,7 @@
     <br/>
     服务名：<input type="text" id="serviceName" name="serviceName" value="${bohSwitch.serviceName}" readonly="readonly"/><br/>
     业务类型：<input type="text" id="bussinessType" name="bussinessType" value="${bohSwitch.bussinessType}" readonly="readonly"/><br/>
+    Host信息：<textarea readonly="readonly" id="hosts" value="${hosts}">${hosts}</textarea> <br/>
     <input type="button" value="update" id="update">
 </form>
 <script>
@@ -70,8 +71,25 @@
         $.each(serializeArray, function (i, field) {
             json[this.name] = this.value;
         });
+        var val = $("#hosts").val();
+        var hostArray = val.substr(1,val.length-2).split(",");
+        var hosts ='[';
+        var containsHost = false;
+        $(hostArray).each(function(i,field){
+            if(field.trim() != ''){
+                hosts +='"'+field.trim()+'",';
+                containsHost = true;
+            }
+        });
+        if(containsHost){
+            hosts = hosts.substr(0,hosts.length-1);
+        }
+        hosts +=']';
         var url = "/boh-cnf/zk/update";
         var param = JSON.stringify(json);
+        param = param.substr(0,param.length-1);
+        param +=',"hosts":'+hosts;
+        param +='}';
         $.base64.utf8encode=true;
         param = $.base64.encode(param)
         url += "?" + param;
